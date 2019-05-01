@@ -4,41 +4,41 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityScriptLab.StateMachine {
-  public class StateMachine<TOwner, TState> where TOwner : MonoBehaviour where TState : Enum {
-    TOwner owner;
+  public class StateMachine<TState> : Updatable where TState : Enum {
+    StateHandler<TState> handler;
     TState state;
 
     public TState State { get { return state; } }
 
-    public StateMachine(TOwner owner) {
-      this.owner = owner;
+    Dictionary<TState, Transitions> transitions = new Dictionary<TState, Transitions>();
+
+    public StateMachine(StateHandler<TState> handler) {
+      this.handler = handler;
+      foreach(TState state in Enum.GetValues(typeof(TState))) {
+        transitions[state] = new Transitions();
+      }
     }
 
-    public StateMachine(TOwner owner, TState initialState) : this(owner) {
+    public StateMachine(StateHandler<TState> handler, TState initialState) : this(handler) {
       state = initialState;
     }
 
-    Dictionary<TState, Transitions> transitions = new Dictionary<TState, Transitions>();
-
-    public void AddTransition(TState from, TState to, TransitionCondition<TOwner> condition) {
-      if (!transitions.ContainsKey(from)) {
-        transitions[from] = new Transitions();
-      }
+    public void AddTransition(TState from, TState to, TransitionCondition condition) {
       transitions[from].Add((to, condition));
     }
 
     public void Update() {
-      owner.SendMessage("HandleState", state, SendMessageOptions.DontRequireReceiver);
-      foreach ((TState to, TransitionCondition<TOwner> condition) in transitions[state]) {
-        if (condition.IsFulfilled(owner)) {
-          owner.SendMessage("HandleStateExit", state, SendMessageOptions.DontRequireReceiver);
+      handler.HandleState(state);
+      foreach ((TState to, TransitionCondition condition) in transitions[state]) {
+        if (condition.IsFulfilled) {
+          handler.OnStateExit(state);
           state = to;
-          owner.SendMessage("HandleStateEnter", to, SendMessageOptions.DontRequireReceiver);
+          handler.OnStateEnter(state);
           break;
         }
       }
     }
 
-    class Transitions : List < (TState, TransitionCondition<TOwner>) > { }
+    class Transitions : List < (TState, TransitionCondition) > { }
   }
 }
