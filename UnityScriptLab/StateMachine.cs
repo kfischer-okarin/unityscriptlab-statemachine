@@ -1,0 +1,3 @@
+namespace UnityScriptLab {
+  namespace StateMachine { }
+}
