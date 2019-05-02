@@ -1,20 +1,16 @@
 using System;
 using System.Collections.Generic;
 
-using UnityEngine;
-
 namespace UnityScriptLab.StateMachine {
   public class StateMachine<TState> : Updatable where TState : Enum {
     StateHandler<TState> handler;
     TState state;
 
-    public TState State { get { return state; } }
-
     Dictionary<TState, Transitions> transitions = new Dictionary<TState, Transitions>();
 
     public StateMachine(StateHandler<TState> handler, TState initialState) {
       this.handler = handler;
-      foreach(TState state in Enum.GetValues(typeof(TState))) {
+      foreach (TState state in Enum.GetValues(typeof(TState))) {
         transitions[state] = new Transitions();
       }
       state = initialState;
