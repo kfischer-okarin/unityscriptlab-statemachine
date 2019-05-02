@@ -1,0 +1,19 @@
+{
+    "name": "UnityScriptLabStateMachineTests",
+    "references": [
+        "GUID:398697379d08548f0b141dd82e266fed"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
