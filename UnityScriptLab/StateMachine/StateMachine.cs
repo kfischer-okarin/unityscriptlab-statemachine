@@ -12,14 +12,11 @@ namespace UnityScriptLab.StateMachine {
 
     Dictionary<TState, Transitions> transitions = new Dictionary<TState, Transitions>();
 
-    public StateMachine(StateHandler<TState> handler) {
+    public StateMachine(StateHandler<TState> handler, TState initialState) {
       this.handler = handler;
       foreach(TState state in Enum.GetValues(typeof(TState))) {
         transitions[state] = new Transitions();
       }
-    }
-
-    public StateMachine(StateHandler<TState> handler, TState initialState) : this(handler) {
       state = initialState;
     }
 

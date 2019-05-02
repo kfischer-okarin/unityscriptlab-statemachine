@@ -4,19 +4,21 @@ using UnityEngine;
 
 namespace UnityScriptLab.StateMachine {
   [RequireComponent(typeof(StateMachineRunner))]
-  public class StatefulBehaviour<TState> : MonoBehaviour, StateHandler<TState>, StateMachineProvider where TState : Enum {
+  public abstract class StatefulBehaviour<TState> : MonoBehaviour, StateHandler<TState>, StateMachineProvider where TState : Enum {
     StateMachine<TState> stateMachine;
     public Updatable StateMachine {
       get {
         if (stateMachine == null) {
-          stateMachine = new StateMachine<TState>(this);
+          stateMachine = new StateMachine<TState>(this, InitialState);
         }
         return stateMachine;
       }
     }
 
-    public void HandleState(TState state) { }
-    public void OnStateEnter(TState state) { }
-    public void OnStateExit(TState state) { }
+    protected abstract TState InitialState { get; }
+
+    public virtual void HandleState(TState state) { }
+    public virtual void OnStateEnter(TState state) { }
+    public virtual void OnStateExit(TState state) { }
   }
 }
