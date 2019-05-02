@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 
 namespace UnityScriptLab.StateMachine {
+  using Condition;
+
   public class StateMachine<TState> : Updatable where TState : Enum {
     StateHandler<TState> handler;
     TState state;
@@ -18,6 +20,9 @@ namespace UnityScriptLab.StateMachine {
 
     public void AddTransition(TState from, TState to, TransitionCondition condition) {
       transitions[from].Add((to, condition));
+    }
+    public void AddTransition(TState from, TState to, Func<bool> condition) {
+      transitions[from].Add((to, new FunctionCondition(condition)));
     }
 
     public void Update() {
