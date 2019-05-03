@@ -22,13 +22,20 @@ namespace UnityScriptLab.StateMachine {
     protected abstract TState InitialState { get; }
 
     /// <summary>
+    /// Initialize the StateMachine in this function.
+    /// </summary>
+    protected virtual void PrepareStateMachine(StateMachine<TState> stateMachine) { }
+
+    /// <summary>
     /// Executed before every Update().
     /// </summary>
     public virtual void HandleState(TState state) { }
+
     /// <summary>
     /// Executed when entering the state.
     /// </summary>
     public virtual void OnStateEnter(TState state) { }
+
     /// <summary>
     /// Executed when leaving the state.
     /// </summary>
