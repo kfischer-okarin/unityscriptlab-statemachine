@@ -14,6 +14,7 @@ namespace UnityScriptLab.StateMachine {
       get {
         if (stateMachine == null) {
           stateMachine = new StateMachine<TState>(this, InitialState);
+          PrepareStateMachine(stateMachine);
         }
         return stateMachine;
       }
